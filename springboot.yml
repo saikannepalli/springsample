@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-deployment
+  namespace: spring
+  labels:
+    app: springboot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboot
+  template:
+    metadata:
+      labels:
+        app: springboot
+    spec:
+      containers:
+      - name: springbootapp
+        image: saikannepalli/phantomgrin:latest
+        ports:
+        - containerPort: 80
+---
+# Node Port Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: springbootservice
+  namespace: spring
+  labels:
+    app: springboot
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+  selector:
+    name: springboot
+---
